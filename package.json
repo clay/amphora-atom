@@ -1,0 +1,23 @@
+{
+  "name": "amphora-atom",
+  "version": "1.0.0",
+  "description": "An XML+ATOM renderer for component data",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/clay/amphora-atom.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/clay/amphora-atom/issues"
+  },
+  "homepage": "https://github.com/clay/amphora-atom#readme"
+}
