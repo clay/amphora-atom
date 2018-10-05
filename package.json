@@ -19,5 +19,12 @@
   "bugs": {
     "url": "https://github.com/clay/amphora-atom/issues"
   },
-  "homepage": "https://github.com/clay/amphora-atom#readme"
+  "homepage": "https://github.com/clay/amphora-atom#readme",
+  "dependencies": {
+    "clay-log": "^1.3.1",
+    "date-fns": "^1.29.0",
+    "highland": "^2.13.0",
+    "lodash": "^4.17.11",
+    "xml": "^1.0.1"
+  }
 }
