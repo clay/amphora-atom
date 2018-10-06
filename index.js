@@ -103,7 +103,6 @@ function sendError(res, e, message = e.message) {
  * @return {Object}
  */
 function wrapInTopLevel(data, attr = {}) {
-  console.log(data);
   const defaultNamespaces = {
     xmlns: 'http://www.w3.org/2005/Atom',
     'xmlns:media': '"http://search.yahoo.com/mrss/',
@@ -125,7 +124,13 @@ function wrapInTopLevel(data, attr = {}) {
  * @return {Object}
  */
 function wrapInEntry(item) {
-  return { entry: item };
+  return {
+    entry: [
+      { id: item.canonicalUrl },
+      { title: item.plaintextPrimaryHeadline },
+      { updated: item.date }
+    ]
+  };
 }
 
 function render({ results, meta, attr }, options, res) {
