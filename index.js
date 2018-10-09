@@ -25,22 +25,6 @@ function elevateCategory(group) {
 }
 
 /**
- * Remove falsy values from an object
- *
- * @param {Object} obj
- * @returns {Object}
- */
-function cleanNullValues(obj) {
-  for (let propName in obj) {
-    if (!obj[propName]) {
-      delete obj[propName];
-    }
-  }
-
-  return obj;
-}
-
-/**
  * Add the meta tags around the feed
  *
  * @param  {String} title
@@ -62,10 +46,11 @@ function feedMetaTags({ title, description, link, copyright, generator, opt }) {
 
     now = new Date();
     siteMeta = [
+      { id: link },
       { title },
       { subtitle: description },
-      { link },
-      { updated: format(now, 'ddd, DD MMM YYYY HH:mm:ss ZZ') }, // Date format must be RFC 822 compliant
+      { link: { _attr: { rel: 'self', href: link } } },
+      { updated: format(now, 'YYYY-MM-DDTHH:mm:ssZ') }, // Date format must be RFC 3339 compliant
       { rights: copyright || now.getFullYear() },
       { generator: generator || 'Feed delivered by Clay' }
     ];
@@ -74,7 +59,7 @@ function feedMetaTags({ title, description, link, copyright, generator, opt }) {
       siteMeta = siteMeta.concat(opt);
     }
 
-    return siteMeta.concat(elevateCategory(group), group);
+    return siteMeta.concat(group);
   };
 }
 
@@ -102,7 +87,7 @@ function sendError(res, e, message = e.message) {
  * @param  {Object} attr
  * @return {Object}
  */
-function wrapInTopLevel(data, attr = {}) {
+function wrapInTopLevel(data) {
   const defaultNamespaces = {
     xmlns: 'http://www.w3.org/2005/Atom',
     'xmlns:media': '"http://search.yahoo.com/mrss/',
@@ -118,26 +103,21 @@ function wrapInTopLevel(data, attr = {}) {
 }
 
 /**
- * Wrap each entry in an object under the `item` property
+ * Wrap each item in an object under the `entry` property
  *
- * @param  {Object} entry
+ * @param  {Object} item
  * @return {Object}
  */
 function wrapInEntry(item) {
-  return {
-    entry: [
-      { id: item.canonicalUrl },
-      { title: item.plaintextPrimaryHeadline },
-      { updated: item.date }
-    ]
-  };
+  return { entry: item };
 }
 
-function render({ results, meta, attr }, options, res) {
-  return h(results)
+function render({ feed, meta }, options, res) {
+  return h(feed)
     .map(wrapInEntry)
     .collect()
-    .map(data => wrapInTopLevel(data, attr))
+    .map(feedMetaTags(meta))
+    .map(data => wrapInTopLevel(data))
     .errors(e => sendError(res, e))
     .toPromise(Promise)
     .then(data => {
