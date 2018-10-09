@@ -2,27 +2,9 @@
 
 const h = require('highland'),
   xml = require('xml'),
-  format = require('date-fns/format'),
-  log = require('./lib/log').setup({ file: __filename });
+  format = require('date-fns/format');
 
-/**
- * Elevate category tags into the
- * the top of the document
- *
- * @param  {Array} group
- * @return {Array}
- */
-function elevateCategory(group) {
-  return group
-    .map(({ entry }) => {
-      return entry
-        .filter(entry => entry && entry.category)
-        .map(entry => entry && entry.category)
-        .join(',');
-    })
-    .filter(Boolean)
-    .map(string => ({ category: string }));
-}
+let log = require('./lib/log').setup({ file: __filename });
 
 /**
  * Add the meta tags around the feed
@@ -81,7 +63,7 @@ function sendError(res, e, message = e.message) {
 }
 
 /**
- * Wraps content in top level RSS and Channel tags
+ * Wraps content in top level ATOM tags
  *
  * @param  {Array} data
  * @param  {Object} attr
@@ -132,3 +114,9 @@ function render({ feed, meta }, options, res) {
 }
 
 module.exports.render = render;
+
+// Exported for testing
+module.exports.wrapInEntry = wrapInEntry;
+module.exports.feedMetaTags = feedMetaTags;
+module.exports.wrapInTopLevel = wrapInTopLevel;
+module.exports.setLog = (fake) => log = fake;
