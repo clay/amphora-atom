@@ -8,13 +8,10 @@ const sinon = require('sinon'),
 
 describe(dirname, function () {
   describe(filename, function () {
-    var sandbox, logSpy;
+    let sandbox;
 
     beforeEach(function () {
-      sandbox = sinon.sandbox.create();
-      logSpy = sandbox.spy();
-
-      lib.setLog(logSpy);
+      sandbox = sinon.createSandbox();
     });
 
     afterEach(function () {
@@ -34,10 +31,7 @@ describe(dirname, function () {
       const fn = lib[this.title];
 
       it('returns an object with `output` and `type` properties', function () {
-        const fakeRes = {
-            type: sandbox.spy(),
-            send: sandbox.spy()
-          },
+        const res = makeFakeRes(),
           result = fn({
             feed: [],
             meta: {
@@ -45,15 +39,15 @@ describe(dirname, function () {
               description: 'bar',
               link: 'foobar'
             }
-          }, {}, fakeRes);
+          }, {}, res);
 
-        return result.then(function () {
-          sinon.assert.calledWith(fakeRes.type, 'application/atom+xml');
-          sinon.assert.calledOnce(fakeRes.send);
+        result.then(function () {
+          sinon.assert.calledWith(res.type, 'application/atom+xml');
+          sinon.assert.calledOnce(res.send);
         });
       });
 
-      it('works', function () {
+      it('should send error 500 if no data is received', function () {
         const res = makeFakeRes(),
           result = fn({
             feed: [],
@@ -61,7 +55,7 @@ describe(dirname, function () {
           }, {}, res);
 
         result.then(function () {
-          sinon.assert.calledWith(res.json, {status: 500, message: 'No data send to XML renderer, cannot respond'});
+          sinon.assert.calledWith(res.json, { status: 500, message: 'No data send to XML renderer, cannot respond' });
         });
       });
     });
@@ -107,20 +101,20 @@ describe(dirname, function () {
       const fn = lib[this.title];
 
       it('returns a function', function () {
-        const result = fn({title:'foo', description: 'bar', link: 'foobar'});
+        const result = fn({ title:'foo', description: 'bar', link: 'foobar' });
 
-        expect(result).to.be.an('function');
+        expect(result).to.be.a('function');
       });
 
       it('its callback returns an array', function () {
-        const result = fn({title:'foo', description: 'bar', link: 'foobar'});
+        const result = fn({ title:'foo', description: 'bar', link: 'foobar' });
 
         expect(result([])).to.be.an('array');
       });
 
       it('its callback assigns passed in values to the return array', function () {
         const [ entryId, entryTitle, entrySubtitle, , , entryRights, entryGenerator ] =
-          fn({title:'foo', description: 'bar', link: 'foobar', copyright: '2018', generator: 'Feed delivered by Clay'})([]);
+          fn({ title:'foo', description: 'bar', link: 'foobar', copyright: '2018', generator: 'Feed delivered by Clay' })([]);
 
         expect(entryId.id).to.eql('foobar');
         expect(entryTitle.title).to.eql('foo');
@@ -130,8 +124,8 @@ describe(dirname, function () {
       });
 
       it('accepts an `opt` object with additional meta tags', function () {
-        const language = {language: 'en-US'},
-          result = fn({title:'foo', description: 'bar', link: 'foobar', opt: language})([]);
+        const language = { language: 'en-US' },
+          result = fn({ title:'foo', description: 'bar', link: 'foobar', opt: language })([]);
 
         expect(result).have.to.deep.include(language);
       });
