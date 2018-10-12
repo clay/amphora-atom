@@ -1,8 +1,5 @@
 # Amphora-Atom
 
-[![CircleCI](https://circleci.com/gh/clay/amphora-atom/tree/master.svg?style=svg)](https://circleci.com/gh/clay/amphora-atom/tree/master)
-[![Coverage Status](https://coveralls.io/repos/github/clay/amphora-atom/badge.svg?branch=master)](https://coveralls.io/github/clay/amphora-atom?branch=master)
-
 > A XML+ATOM renderer for feeds components.
 
 ```bash
