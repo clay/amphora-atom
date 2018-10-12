@@ -20,21 +20,19 @@ let log = require('./lib/log').setup({ file: __filename });
  */
 function feedMetaTags({ title, description, link, copyright, generator, opt }) {
   return (group) => {
-    let now, siteMeta;
-
     if (!title || !description || !link) {
       throw new Error('A `title`, `description` and `link` property are all required in the `meta` object for the Atom renderer');
     }
 
-    now = new Date();
-    siteMeta = [
+    const now = new Date();
+    let siteMeta = [
       { id: link },
       { title },
       { subtitle: description },
       { link: { _attr: { rel: 'self', href: link } } },
       { updated: format(now, 'YYYY-MM-DDTHH:mm:ssZ') }, // Date format must be RFC 3339 compliant
       { rights: copyright || now.getFullYear() },
-      { generator: generator || 'Feed delivered by Clay' }
+      { generator: generator || 'Feed delivered by Clay' },
     ];
 
     if (opt) {
@@ -72,9 +70,9 @@ function sendError(res, e, message = e.message) {
 function wrapInTopLevel(data) {
   const defaultNamespaces = {
     xmlns: 'http://www.w3.org/2005/Atom',
-    'xmlns:media': '"http://search.yahoo.com/mrss/',
+    'xmlns:media': 'http://search.yahoo.com/mrss/',
     'xmlns:mi': 'http://schemas.ingestion.microsoft.com/common/',
-    'xmlns:dcterms': 'https://purl.org/dc/terms/',
+    'xmlns:dcterms': 'http://purl.org/dc/terms/',
     'xmlns:at': 'http://purl.org/atompub/tombstones/1.0',
     'xml:lang': 'en-us'
   };

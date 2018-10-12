@@ -73,9 +73,9 @@ describe(dirname, function () {
         result = fn('foo'),
         defaultNamespaces = {
           xmlns: 'http://www.w3.org/2005/Atom',
-          'xmlns:media': '"http://search.yahoo.com/mrss/',
+          'xmlns:media': 'http://search.yahoo.com/mrss/',
           'xmlns:mi': 'http://schemas.ingestion.microsoft.com/common/',
-          'xmlns:dcterms': 'https://purl.org/dc/terms/',
+          'xmlns:dcterms': 'http://purl.org/dc/terms/',
           'xmlns:at': 'http://purl.org/atompub/tombstones/1.0',
           'xml:lang': 'en-us'
         };
