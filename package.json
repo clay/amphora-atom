@@ -1,6 +1,6 @@
 {
   "name": "amphora-atom",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "An XML+ATOM renderer for component data",
   "main": "index.js",
   "directories": {
