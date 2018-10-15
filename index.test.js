@@ -116,7 +116,7 @@ describe(dirname, function () {
         const [ entryId, entryTitle, entrySubtitle, , , entryRights, entryGenerator ] =
           fn({ title:'foo', description: 'bar', link: 'foobar', copyright: '2018', generator: 'Feed delivered by Clay' })([]);
 
-        expect(entryId.id).to.eql('foobar');
+        expect(entryId.id).to.eql('http://foobar');
         expect(entryTitle.title).to.eql('foo');
         expect(entrySubtitle.subtitle).to.eql('bar');
         expect(entryRights.rights).to.eql('2018');
