@@ -26,7 +26,7 @@ function feedMetaTags({ title, description, link, copyright, generator, opt }) {
 
     const now = new Date();
     let siteMeta = [
-      { id: link },
+      { id: link.includes('http') ? link : `http://${link}` },
       { title },
       { subtitle: description },
       { link: { _attr: { rel: 'self', href: link } } },
