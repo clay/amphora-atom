@@ -1,5 +1,7 @@
 # Amphora-Atom
 
+[![CircleCI](https://circleci.com/gh/clay/amphora-atom/tree/master.svg?style=svg)](https://circleci.com/gh/clay/amphora-atom/tree/master)
+
 > A XML+ATOM renderer for feeds components.
 
 ```bash
